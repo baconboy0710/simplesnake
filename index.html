@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <title>Snake Game</title>
+  </head>
+  <body>
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <script>
+      // Initialize the canvas and context
+      var canvas = document.getElementById('gameCanvas');
+      var ctx = canvas.getContext('2d');
+
+      // Set the dimensions of the canvas
+      var canvasWidth = canvas.width;
+      var canvasHeight = canvas.height;
+
+      // Set the initial position of the snake
+      var snakeX = canvasWidth / 2;
+      var snakeY = canvasHeight / 2;
+      var snakeSegments = [{x: snakeX, y: snakeY}];
+      var snakeLength = 1;
+      
+      // Set the initial direction of the snake
+      var snakeDirection = 'right';
+
+      // Set the initial position of the food
+      var foodX = Math.floor(Math.random() * canvasWidth);
+      var foodY = Math.floor(Math.random() * canvasHeight);
+
+      // Set the initial game state
+      var gameOver = false;
+      var score = 0;
+
+      // Set the size of the snake segments and the food
+      var segmentSize = 10;
+      var foodSize = 10;
+
+      // Set the speed of the game (lower values mean faster game)
+      var gameSpeed = 100;
+
+      // Initialize the keydown event listener
+      document.addEventListener('keydown', function(event) {
+        // Set the direction of the snake based on the key that was pressed
+        switch (event.key) {
+          case 'ArrowUp':
+            snakeDirection = 'up';
+            break;
+          case 'ArrowDown':
+            snakeDirection = 'down';
+            break;
+          case 'ArrowLeft':
+            snakeDirection = 'left';
+            break;
+          case 'ArrowRight':
+            snakeDirection = 'right';
+            break;
+        }
+      });
+
+      // The main game loop
+      function gameLoop() {
+        // Clear the canvas
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+        // Draw the food
+        ctx.fillStyle = 'red';
+        ctx.fillRect(foodX, foodY, foodSize, foodSize);
+
+        // Move the snake
+        var newSnakeHead = {x: snakeSegments[0].x, y: snakeSegments[0].y};
+        switch (snakeDirection) {
+          case 'up':
+            newSnakeHead.y--;
+            break;
+          case 'down':
+            newSnakeHead.y++;
+            break;
+          case 'left':
+            newSnakeHead.x--;
+            break;
+          case 'right':
+            newSnakeHead.x++;
+            break;
+        }
+
+        // Check if the snake has collided with the food
+        if (newSnakeHead.x === foodX && newSnakeHead.y === foodY) {
+          // Increase the score and the snake's length
+          score++;
+          snakeLength++;
+
+          // Generate a new piece of food
+          foodX = Math.floor(Math.random()
